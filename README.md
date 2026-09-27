@@ -2,85 +2,65 @@
 
 **Your AI works. You play.**
 
-Prompt Codex → Game pops up → Codex finishes → Back to work.
+Prompt Codex → game pops up → Codex finishes → back to work.
 
 [简体中文](README.zh-CN.md)
 
 ![Codex Arcade Demo](assets/demo.gif)
 
-Codex Arcade is a tiny, local Tkinter companion for Codex Desktop. While Codex works, it opens a quick game. When the task stops, Arcade shows a short sign-off and closes automatically.
+## Why?
 
-> Primary test environment: **Windows + Codex Desktop**.
+I noticed that while Codex was working, I would often pick up my phone “for a second” — and keep scrolling long after Codex had already finished.
 
-## Games
+So I made this:
 
-Snake · Dodge · Aim Trainer · Breakout · Pong
+**Codex starts working → Arcade opens → Codex finishes → Arcade closes.**
 
-All five are intentionally lightweight: start instantly, play for a few seconds or a few minutes, and leave without regret when Codex finishes.
+## What you get
+
+- 🎮 Snake, Dodge, Aim Trainer, Breakout, Pong
+- 🔀 Switch or restart games anytime
+- 🏆 Local stats, best scores, and 8 achievements
+- 🌐 English / 简体中文
+- 🔒 Fully local; no prompt, code, or project content is uploaded
 
 ![Codex Arcade Screenshot](assets/screenshot.png)
 
 ## Install
 
-Requirements: Windows, Python 3.10+ with tkinter, and Codex Desktop.
+Requires **Windows**, **Python 3.10+ with tkinter**, and **Codex Desktop**.
 
 ```bat
+git clone https://github.com/lingmeng-658/codex-arcade.git
+cd codex-arcade
 python install.py
 ```
 
-or:
+Then open:
 
-```bat
-py -3 install.py
-```
+**Codex Desktop → Settings → Hooks**
 
-The installer copies the runtime into `%LOCALAPPDATA%\CodexArcade\app`, backs up `~\.codex\hooks.json`, then safely merges its hooks without replacing unknown fields or existing hooks.
+and approve the Codex Arcade hooks.
 
-**After installation:** open **Codex Desktop → Settings → Hooks** and review/approve the new Codex Arcade hooks.
+That’s it. Send Codex a task and Arcade will pop up if Codex is still working after about two seconds.
 
-## Use
-
-- Send a prompt. After about two seconds, Arcade opens only if Codex is still working.
-- Automatic launches choose a random game.
-- The home screen lets you choose a game, view Stats & Achievements, and switch English / 简体中文.
-- When Codex stops or is interrupted, Arcade shows the brief “back to work” ending and closes.
-
-### Controls
+## Controls
 
 | Key | Action |
 | --- | --- |
 | `P` / `Space` | Pause / resume |
-| `R` | Restart current game |
-| `Tab` / `G` | Return to Games |
-| `N` | Play a different random game |
+| `R` | Restart |
+| `N` | Random next game |
+| `Tab` / `G` | Games list |
 | `Esc` | Close Arcade |
 
 Snake and Dodge use WASD / arrow keys. Aim Trainer uses the mouse.
 
-Run manually with:
-
-```bat
-start_arcade.cmd
-```
-
-## Stats & Achievements
-
-The Stats screen keeps:
-
-- Arcade time today and total play time
-- Codex completion / wait statistics
-- Best result for each game
-- Eight lightweight achievements
-
-All statistics stay local.
-
 ## Privacy
 
-Codex Arcade uploads nothing. It does not read or send prompts, code, project data, or statistics. Local state lives in:
+Everything stays local.
 
-```text
-%LOCALAPPDATA%\CodexArcade
-```
+Codex Arcade does **not** read or upload your prompts, code, or project files. Runtime data and stats are stored under `%LOCALAPPDATA%\CodexArcade`.
 
 ## Uninstall
 
@@ -88,19 +68,10 @@ Codex Arcade uploads nothing. It does not read or send prompts, code, project da
 python uninstall.py
 ```
 
-Statistics are kept by default. To remove them too:
+To remove local stats too:
 
 ```bat
 python uninstall.py --delete-data
-```
-
-Only hooks marked as Codex Arcade are removed; other hooks are preserved.
-
-## Development checks
-
-```bat
-python -m unittest discover -s tests -v
-python install.py --dry-run
 ```
 
 ## License
