@@ -43,6 +43,10 @@ py -3 install.py
 start_arcade.cmd
 ```
 
+## 统计与成就
+
+统计页面会记录本地摸鱼时间、Codex 等待与完成次数，以及各游戏最佳成绩。8 个轻量成就会随游玩解锁，数据仅保存在本地统计文件中。
+
 ## 隐私
 
 所有数据只保存在 `%LOCALAPPDATA%\CodexArcade`。不会上传 prompt、代码、项目数据或统计信息。

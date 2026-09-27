@@ -43,6 +43,10 @@ Run it manually with:
 start_arcade.cmd
 ```
 
+## Stats & Achievements
+
+The Stats screen keeps local play time, Codex wait and completion counts, plus each game's best result. Eight lightweight achievements unlock from play and are stored only with the local statistics.
+
 ## Privacy and local data
 
 Codex Arcade uploads nothing. It never reads or sends prompts, code, or project data. Its state and statistics live only in `%LOCALAPPDATA%\CodexArcade`.
