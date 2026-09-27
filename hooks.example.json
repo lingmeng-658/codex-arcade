@@ -1,0 +1,8 @@
+{
+  "description": "Codex Arcade v0.1 example. Prefer running install.py so existing hooks are safely preserved.",
+  "hooks": {
+    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "cmd.exe /d /s /c \"C:\\path\\to\\start_arcade.cmd\"", "commandWindows": "cmd.exe /d /s /c \"C:\\path\\to\\start_arcade.cmd\"", "timeout": 8, "codexArcade": "Codex Arcade v0.1" }] }],
+    "Stop": [{ "hooks": [{ "type": "command", "command": "cmd.exe /d /s /c \"C:\\path\\to\\stop_arcade.cmd\"", "commandWindows": "cmd.exe /d /s /c \"C:\\path\\to\\stop_arcade.cmd\"", "timeout": 8, "codexArcade": "Codex Arcade v0.1" }] }],
+    "Interrupt": [{ "hooks": [{ "type": "command", "command": "cmd.exe /d /s /c \"C:\\path\\to\\stop_arcade.cmd\"", "commandWindows": "cmd.exe /d /s /c \"C:\\path\\to\\stop_arcade.cmd\"", "timeout": 8, "codexArcade": "Codex Arcade v0.1" }] }]
+  }
+}

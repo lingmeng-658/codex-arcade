@@ -1,0 +1,1 @@
+# No third-party dependencies. Codex Arcade uses only Python's standard library and tkinter.
