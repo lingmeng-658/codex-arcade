@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import start
 import stop
-from codex_arcade.app import read_session, session_path
+from codex_arcade.app import launch, read_session, session_path
 from codex_arcade.stats import atomic_json
 
 
@@ -36,3 +36,12 @@ class LifecycleTests(unittest.TestCase):
         with patch("start.time.sleep", lambda _: stop.stop("project-b")), patch("start.subprocess.Popen"):
             self.assertFalse(start.start("project-b"))
         self.assertNotEqual(read_session().get("token"), "old")
+
+    def test_failed_arcade_startup_removes_its_session_token(self):
+        atomic_json(session_path(), {"token": "x", "status": "running", "pid": 0})
+
+        with patch("codex_arcade.app.Arcade", side_effect=RuntimeError("Tk startup failed")):
+            with self.assertRaisesRegex(RuntimeError, "Tk startup failed"):
+                launch("x")
+
+        self.assertEqual(read_session(), {})

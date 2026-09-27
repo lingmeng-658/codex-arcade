@@ -6,7 +6,7 @@ STRINGS = {
     "en": {
         "title": "CODEX ARCADE", "working": "Codex is working. Your turn to play.",
         "finished": "CODEX HAS FINISHED.", "back": "BACK TO WORK.", "random": "Random",
-        "games": "Games", "stats": "Stats", "language": "Language", "today": "Arcade Time Today",
+        "random_next": "Random", "games": "Games", "restart": "Restart", "paused": "PAUSED", "game_over": "GAME OVER", "game_controls": "P/Space Pause · R Restart · Tab/G Games · N Random · Esc Close", "stats": "Stats", "language": "Language", "today": "Arcade Time Today",
         "tasks": "Tasks Completed", "total": "Total Arcade Time", "score": "Score",
         "controls": "WASD / arrows · Esc to close", "snake": "Snake", "dodge": "Dodge",
         "aim": "Aim Trainer", "breakout": "Breakout", "pong": "Pong", "best": "Best",
@@ -15,7 +15,7 @@ STRINGS = {
     "zh-CN": {
         "title": "CODEX ARCADE", "working": "Codex 正在干活 · 你先摸会儿鱼",
         "finished": "CODEX 干完了。", "back": "别玩了，回来上班。", "random": "随机",
-        "games": "游戏", "stats": "统计", "language": "语言", "today": "今日摸鱼",
+        "random_next": "随机", "games": "游戏", "restart": "重开", "paused": "已暂停", "game_over": "本局结束", "game_controls": "P/空格 暂停 · R 重开 · Tab/G 游戏 · N 随机 · Esc 关闭", "stats": "统计", "language": "语言", "today": "今日摸鱼",
         "tasks": "Codex 完成任务", "total": "累计摸鱼", "score": "得分",
         "controls": "WASD / 方向键 · Esc 退出", "snake": "贪吃蛇", "dodge": "躲避",
         "aim": "瞄准训练", "breakout": "打砖块", "pong": "乒乓", "best": "最高",

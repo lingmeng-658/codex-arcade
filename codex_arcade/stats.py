@@ -45,8 +45,14 @@ class StatsStore:
             data = json.loads(self.path.read_text(encoding="utf-8"))
             base = self.default()
             base.update(data)
+            if not isinstance(base["games"], dict):
+                base["games"] = self.default()["games"]
             for game in GAMES:
-                base["games"].setdefault(game, {"best": 0, "longest": 0.0})
+                details = base["games"].get(game, {})
+                normalized = {"best": 0, "longest": 0.0}
+                if isinstance(details, dict):
+                    normalized.update(details)
+                base["games"][game] = normalized
             return base
         except (OSError, json.JSONDecodeError):
             backup = self.path.with_name(f"stats.corrupt-{int(time.time())}.json")
@@ -63,14 +69,14 @@ class StatsStore:
     def set_language(self, language: str) -> None:
         data = self.load(); data["language"] = language; self.save(data)
 
-    def _record_game(self, data: dict, game: str, score: int, elapsed: float) -> None:
+    def _record_game(self, data: dict, game: str, score: int, elapsed: float, best_value: float | None = None) -> None:
         duration = max(0.0, elapsed)
         today = date.today().isoformat()
         data["total_seconds"] += duration
         data["today"][today] = data["today"].get(today, 0.0) + duration
         data["longest_wait_seconds"] = max(data["longest_wait_seconds"], duration)
         details = data["games"].setdefault(game, {"best": 0, "longest": 0.0})
-        details["best"] = max(details["best"], int(score))
+        details["best"] = max(details["best"], best_value if best_value is not None else int(score))
         details["longest"] = max(details["longest"], duration)
         achievements = set(data.get("achievements", [])); achievements.add("first_game")
         if data["total_seconds"] >= 600: achievements.add("ten_minutes")
@@ -79,8 +85,11 @@ class StatsStore:
         if data["today"][today] >= 20 * 2: achievements.add("touch_grass")
         data["achievements"] = sorted(achievements)
 
-    def record_game(self, game: str, score: int, elapsed: float) -> dict:
-        data = self.load(); self._record_game(data, game, score, elapsed); self.save(data); return data
+    def record_game(self, game: str, score: int, elapsed: float, best_value: float | None = None) -> dict:
+        data = self.load(); self._record_game(data, game, score, elapsed, best_value); self.save(data); return data
+
+    def finish_arcade(self, forced: bool) -> dict:
+        data = self.load(); data["tasks_completed"] += int(forced); data["forced_ends"] += int(forced); self.save(data); return data
 
     def start_session(self) -> None:
         self.started_at = time.monotonic()

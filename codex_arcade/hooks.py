@@ -21,7 +21,12 @@ def add_arcade_hooks(config: dict, start_cmd: str, stop_cmd: str) -> dict:
 def remove_arcade_hooks(config: dict) -> dict:
     result = copy.deepcopy(config); hooks = result.get("hooks", {})
     for event in list(hooks):
-        kept = [group for group in hooks[event] if not any(h.get("codexArcade") == MARKER for h in group.get("hooks", []))]
+        kept = []
+        for group in hooks[event]:
+            remaining = [hook for hook in group.get("hooks", []) if hook.get("codexArcade") != MARKER]
+            if remaining:
+                group["hooks"] = remaining
+                kept.append(group)
         if kept: hooks[event] = kept
         else: hooks.pop(event)
     return result

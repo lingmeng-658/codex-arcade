@@ -37,3 +37,12 @@ class StatsStoreTests(unittest.TestCase):
             path = Path(tmp) / "stats.json"; path.write_text("not json", encoding="utf-8")
             self.assertEqual(StatsStore(path).load()["tasks_completed"], 0)
             self.assertTrue(list(Path(tmp).glob("stats.corrupt-*.json")))
+
+    def test_upgrades_partial_game_statistics_before_recording(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "stats.json"
+            path.write_text('{"games": {"snake": {"best": 3}}}', encoding="utf-8")
+
+            StatsStore(path).record_game("snake", 4, 1.0)
+
+            self.assertEqual(StatsStore(path).load()["games"]["snake"], {"best": 4, "longest": 1.0})

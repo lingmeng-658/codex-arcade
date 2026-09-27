@@ -12,3 +12,13 @@ class HooksTests(unittest.TestCase):
         removed = remove_arcade_hooks(installed)
         self.assertEqual(removed["hooks"]["Stop"], existing["hooks"]["Stop"])
         self.assertNotIn("UserPromptSubmit", removed["hooks"])
+
+    def test_remove_keeps_non_arcade_hook_in_a_shared_group(self):
+        config = {"hooks": {"Stop": [{"hooks": [
+            {"type": "command", "command": "keep.cmd"},
+            {"type": "command", "command": "stop_arcade.cmd", "codexArcade": "Codex Arcade v0.1"},
+        ]}]}}
+
+        removed = remove_arcade_hooks(config)
+
+        self.assertEqual(removed["hooks"]["Stop"], [{"hooks": [{"type": "command", "command": "keep.cmd"}]}])

@@ -29,8 +29,11 @@ class FakeStore:
     def __init__(self):
         self.recorded = []
 
-    def record_game(self, game, score, elapsed=None):
+    def record_game(self, game, score, elapsed=None, best_value=None):
         self.recorded.append((game, score, elapsed))
+
+    def load(self):
+        return {"games": {name: {"best": 0} for name in ("snake", "dodge", "aim", "breakout", "pong")}}
 
 
 def arcade_for_switching():
@@ -44,6 +47,10 @@ def arcade_for_switching():
     arcade.game = None
     arcade.game_after_id = None
     arcade.game_generation = 0
+    arcade.runtime_state = "playing"
+    arcade.round_elapsed = 0.0
+    arcade.round_started_at = 0.0
+    arcade.round_settled = False
     return arcade
 
 
@@ -88,3 +95,34 @@ class GameSwitchingTests(unittest.TestCase):
         stale_tick()
 
         self.assertEqual(arcade.game.age, dodge_age)
+
+    def test_restart_settles_round_without_ending_session(self):
+        arcade = arcade_for_switching()
+        arcade.start_game("snake")
+        arcade.restart_current_game()
+
+        self.assertEqual(arcade.game_name, "snake")
+        self.assertEqual(arcade.runtime_state, "playing")
+        self.assertEqual(arcade.store.recorded[0][0], "snake")
+
+    def test_pause_excludes_elapsed_time_and_blocks_old_tick(self):
+        arcade = arcade_for_switching()
+        arcade.start_game("dodge")
+        old_tick = arcade.root.scheduled[-1][1]
+        arcade.pause_or_resume()
+        age_before = arcade.game.age
+
+        old_tick()
+
+        self.assertEqual(arcade.runtime_state, "paused")
+        self.assertEqual(arcade.game.age, age_before)
+
+    def test_paused_wall_time_is_excluded_from_round_settlement(self):
+        arcade = arcade_for_switching()
+        with patch("codex_arcade.app.time.monotonic", side_effect=[0.0, 10.0, 110.0, 111.0]):
+            arcade.start_game("snake")
+            arcade.pause_or_resume()
+            arcade.pause_or_resume()
+            arcade.settle_round()
+
+        self.assertEqual(arcade.store.recorded[0][2], 11.0)
